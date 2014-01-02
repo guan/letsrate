@@ -16,7 +16,7 @@ module Helpers
       readonly = !(current_user && rateable_obj.can_rate?(current_user, dimension))
     end
 
-    content_tag tag, '', "data-dimension" => dimension, :class => "star", "data-rating" => avg,
+    content_tag tag, '', "data-dimension" => dimension, :class => "star rating_for", "data-rating" => avg,
                 "data-id" => rateable_obj.id, "data-classname" => rateable_obj.class.name,
                 "data-disable-after-rate" => disable_after_rate,
                 "data-readonly" => readonly,
@@ -35,12 +35,18 @@ module Helpers
 
     tag = options[:use_span] ? :span : :div
 
+    id_selector =  options[:id]? options[:id] : "letsrate"
+
     readonly=false
     if disable_after_rate
       readonly = current_user.present? ? !rateable_obj.can_rate?(current_user.id, dimension) : true
     end
 
-    content_tag tag, '', "data-dimension" => dimension, :class => "star", "data-rating" => stars,
+    content_tag tag, '',
+                id: id_selector,
+                "data-dimension" => dimension,
+                class: "star rating_for_user",
+                "data-rating" => stars,
                 "data-id" => rateable_obj.id, "data-classname" => rateable_obj.class.name,
                 "data-disable-after-rate" => disable_after_rate,
                 "data-readonly" => readonly,
